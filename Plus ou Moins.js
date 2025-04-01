@@ -20,16 +20,23 @@ const plusMoins = () => {
       alert("C'est plus !");
       answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
       console.log(answer);
-
     } else {
-      alert("Caractère invalide !");
+      alert("Ce n'est pas un nombre valide !");
       answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
       console.log(answer);
     }
     
     if (answer === randomNumber) {
-     return  alert(`Bravo ! Tu as trouvé en ${numberOfTries} tentatives`);
+      alert(`Bravo ! Tu as trouvé en ${numberOfTries} tentatives`);
+      let replay = confirm("Rejouer ?" )
+      console.log(replay);
+      if (replay === true){
+         plusMoins()
+      }
+      console.log(answer);
+      
     } 
+  
   }
 };
 
