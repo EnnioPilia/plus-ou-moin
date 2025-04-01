@@ -1,22 +1,27 @@
-let randomNumber = Math.random() * 100;
-randomNumber = Math.floor(randomNumber);
+let button = document.querySelector("button");
+
+let randomNumber = Math.floor(Math.random() * 100);
 console.log(randomNumber);
 
-let answer = parseInt(prompt("More or less, guess the number !")); // Convertir la réponse en entier
+const plusMoins = () => {
+  let numberOfTries = 1;
+  let answer = parseInt(prompt("Plus ou moins, devinez le nombre !"));
 
-const plusMoins = () =>{
-   if (answer > randomNumber){
-    alert("C'est moins !")
-   } else if (answer < randomNumber){
-    alert("C'est plus !")
-   } else {
-    alert("correct")
-   }
-}
+  while (answer !== randomNumber) {
+    console.log("Tries :", numberOfTries++);
 
+    if (answer > randomNumber) {
+      alert("C'est moins !");
+      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
+    } else  {
+      alert("C'est plus !");
+      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
+    } 
+    
+    if (answer === randomNumber) {
+      alert(`Bravo ! Tu as trouvé en ${numberOfTries} tentatives`);
+    }
+  }
+};
 
-while (answer !== randomNumber) {
-    plusMoins(); // Appeler la fonction pour afficher l'indice
-    answer = parseInt(prompt("Essaie encore ! Devine le nombre :")); // Demander à nouveau une réponse
- }
-
+button.addEventListener("click", plusMoins);
