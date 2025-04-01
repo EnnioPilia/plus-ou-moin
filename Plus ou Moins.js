@@ -1,44 +1,71 @@
 let button = document.querySelector("button");
-let randomNumber 
-let answer 
+let randomNumber;
+let answer;
+let numMin;
+let numMax;
 
-const getRandomNumber = () =>{
-   randomNumber = Math.floor(Math.random() * 100);
-console.log(randomNumber);
-}
-   
-const plusMoins = () => {
-   getRandomNumber()
-   
+const minInput = () => {
+  numMin = parseInt(prompt("Entrez le nombre minimum"));
+  if (isNaN(numMin)) {
+    alert("Veuillez entrer un nombre valide.");
+    return minInput();
+  }
+  maxInput();
+};
+
+const maxInput = () => {
+  numMax = parseInt(prompt("Entrez le nombre maximum"));
+  if (isNaN(numMax) || numMax <= numMin) {
+    alert("Veuillez entrer un nombre valide supérieur au minimum.");
+    return maxInput();
+  }
+  startGame();
+};
+
+const getRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const startGame = () => {
+  randomNumber = getRandomNumber(numMin, numMax);
+  console.log("Nombre aléatoire généré :", randomNumber);
   let numberOfTries = 1;
-  console.log("Tries :", numberOfTries);
+  let maxTries = 10;
   
-  answer = parseInt(prompt("Plus ou moins, devinez le nombre !"));
-
-  while (answer !== randomNumber) {
-   console.log("Tries :", numberOfTries++);
-
-    if (answer > randomNumber) {
-      alert("C'est moins !");
-      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
-    } else if(answer < randomNumber) {
-      alert("C'est plus !");
-      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
-    } else {
+  while (numberOfTries <= maxTries) {
+    answer = parseInt(prompt(`Tentative ${numberOfTries}/${maxTries} - Devinez le nombre !`));
+    
+    if (isNaN(answer)) {
       alert("Ce n'est pas un nombre valide !");
-      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
+      numberOfTries--
+      console.log(answer);
+      
+    } else if (answer > randomNumber) {
+      alert("C'est moins !");
+    } else if (answer < randomNumber) {
+      alert("C'est plus !");
+    } else {
+      alert(`Bravo ! Tu as trouvé en ${numberOfTries} tentatives`);
+      if (confirm("Rejouer ?")) {
+        minInput();
+      } else {
+        alert("Merci d'avoir joué !");
+      }
+      return;
     }
     
-    if (answer === randomNumber) {
-      alert(`Bravo ! Tu as trouvé en ${numberOfTries} tentatives`);
-      let replay = confirm("Rejouer ?" )
-      if (replay === true){
-         plusMoins()
+    numberOfTries++;
+    if (numberOfTries > maxTries) {
+      alert(`Vous avez atteint la limite de ${maxTries} tentatives. Le nombre était ${randomNumber}.`);
+      if (confirm("Rejouer ?")) {
+        minInput();
       } else {
-         alert("Merci d'avoir joué !")
+        alert("Merci d'avoir joué !");
       }
-    } 
+      return;
+    }
   }
 };
 
-button.addEventListener("click", plusMoins);
+button.addEventListener("click", minInput);
+
