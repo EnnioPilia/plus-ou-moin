@@ -1,40 +1,63 @@
 let button = document.querySelector("button");
+let randomNumber 
+let answer 
 
-let randomNumber = Math.floor(Math.random() * 100);
+const getRandomNumber = () =>{
+   randomNumber = Math.floor(Math.random() * 100);
 console.log(randomNumber);
-
-const plusMoins = () => {
+}
+   
+const startGame = () => {
+   getRandomNumber()
+   
+   //Déclaration des tentatives
   let numberOfTries = 1;
   console.log("Tries :", numberOfTries);
   
-  let answer = parseInt(prompt("Plus ou moins, devinez le nombre !"));
+  //Déclaration du prompt
+  answer = parseInt(prompt("Plus ou moins, devinez le nombre !"));
 
-  while (answer !== randomNumber) {
-   console.log("Tries :", numberOfTries++);
+   //Condition tant que le nbre est pas trouvé
+   while (answer !== randomNumber) {
+      console.log("Tries :", numberOfTries++);
 
+         //Vérif si le prompt est trop élevé ou bas
     if (answer > randomNumber) {
       alert("C'est moins !");
-      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
-      console.log(answer);
-    } else if(answer < randomNumber) {
+      
+    } else if (answer < randomNumber) {
       alert("C'est plus !");
-      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
-      console.log(answer);
-
-    } else {
-      alert("Ce n'est pas un nombre valide !");
-      answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
-      console.log(answer);
-    }
+      
+     } else if (isNaN(answer)){
+      alert("Ce n'est pas un caractère valide !");
+    } 
+    answer = parseInt(prompt("Essaie encore ! Devine le nombre :"));
     
+   }
+
+   //Vérif si nbre trouvé
     if (answer === randomNumber) {
-     return  alert(`Bravo ! Tu as trouvé en ${numberOfTries} tentatives`);
+      alert(`Bravo ! La réponse était ${randomNumber}. Tu as trouvé en ${numberOfTries} tentatives`);
+      let replay = confirm("Souhaites-tu rejouer ?" )
+      if (replay === true){
+         startGame()
+      } else {
+         return alert("Merci d'avoir joué !")
+      }
     } 
 
-  
+    //Vérif si plus de 10 tentatives
+    if (numberOfTries > 10){
+      alert(`Vous n'avez plus de tentatives ! Dommage le nombre mystère était ${randomNumber}`) 
+      let replay = confirm("Souhaites-tu rejouer ?" )
+    if (replay === true){
+       startGame()
+    } else {
+      return alert("Merci d'avoir joué !")
+   }
+    }
+
   }
-};
 
 
-
-button.addEventListener("click", plusMoins);
+button.addEventListener("click", startGame);
